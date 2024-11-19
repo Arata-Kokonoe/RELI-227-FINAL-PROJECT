@@ -1,23 +1,18 @@
+package main;
 public class GameLoop implements Runnable{
 
     public static final int FPS = 60;
 
-    private GamePanel panel;
+    private GameFrame frame;
     private GameState state;
-    private Thread gameThread;
 
-    public GameLoop(GamePanel p){
-        panel = p;
+    public GameLoop(GameFrame f){
+        frame = f;
     }
 
     public void init(){
         state = new GameState();
-        panel.addKeyListener(state.getKeyListener());
-    }
-
-    public void startGameThread(){
-        gameThread = new Thread(this);
-        gameThread.start();
+        frame.addKeyListener(state.getKeyListener());
     }
 
     public void run(){
@@ -29,7 +24,7 @@ public class GameLoop implements Runnable{
         long timer = 0;
         int drawCount = 0;
 
-        while(gameThread != null){
+        while(state != null){
             
             currentTime = System.nanoTime();
             
@@ -38,7 +33,7 @@ public class GameLoop implements Runnable{
             lastTime = currentTime;
 
             if(delta >= 1){
-                panel.draw();
+                frame.draw(state);
                 state.update();
                 delta--;
                 drawCount++;
