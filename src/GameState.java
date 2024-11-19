@@ -1,14 +1,11 @@
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class KeyHandler implements KeyListener{
+public class GameState extends KeyAdapter{
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        //  do nothing
-    }
+    private KeyHandler keyHandler;
+    
 
     @Override
     public void keyPressed(KeyEvent e) {
