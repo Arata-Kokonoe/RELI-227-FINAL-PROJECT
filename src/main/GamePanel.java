@@ -17,7 +17,7 @@ import entities.Player;
 public class GamePanel extends JPanel implements Runnable{
     
     //SCREEN SETTINGS
-    public final int TILE_SIZE = 48;
+    public static final int TILE_SIZE = 48;
     public final int MAX_COL = 20;
     public final int MAX_ROW = 12;
     public int screenWidth = TILE_SIZE * MAX_COL;
@@ -119,7 +119,6 @@ public class GamePanel extends JPanel implements Runnable{
             
             for (Entity e : drawList) {
                 e.draw(g2);
-                System.out.println(e + " was drawn" );
             }
 
             drawList.clear();
@@ -151,6 +150,6 @@ public class GamePanel extends JPanel implements Runnable{
     public void startGameThread(){
         gameThread = new Thread(this);
         gameThread.start();
-        setFullscreen();
+        //setFullscreen();
     }
 }

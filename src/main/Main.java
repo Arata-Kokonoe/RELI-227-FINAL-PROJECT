@@ -9,7 +9,7 @@ public class Main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("change name later");
-        window.setUndecorated(true);
+        //window.setUndecorated(true);
 
         GamePanel gamePanel = new GamePanel();
         window.add(gamePanel);  // adds the jpanel to the jframe

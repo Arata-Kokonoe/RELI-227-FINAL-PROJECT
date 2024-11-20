@@ -22,7 +22,7 @@ public class Entity {
         direction = -1;
         x = 100;
         y = 100;
-        speed = 5;
+        speed = 2;
 
         setSprites();
         width = sprite.getWidth();
@@ -49,11 +49,11 @@ public class Entity {
         g2.drawImage(sprite, x, y, null);
     }
 
-    private void setSprites(){
+    public void setSprites(){
         sprite = loadSprite("/defaultSprite-1");
     }
 
-    private BufferedImage loadSprite(String imgPath){
+    public BufferedImage loadSprite(String imgPath){
         BufferedImage image = null;
 
         try {
