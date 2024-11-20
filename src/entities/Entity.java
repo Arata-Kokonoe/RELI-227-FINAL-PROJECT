@@ -4,8 +4,11 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+import main.GamePanel;
+
 public class Entity {
-    public int x, y, speed, direction;
+    public int x, y, speed, direction, width, height;
+    public Hitbox hb;
 
     public BufferedImage sprite;
 
@@ -16,14 +19,18 @@ public class Entity {
 
     public Entity(){
 
+        direction = -1;
         x = 100;
         y = 100;
-        speed = 50;
+        speed = 5;
 
         setSprites();
+        width = sprite.getWidth();
+        height = sprite.getHeight();
+
     }
 
-    public void update(){
+    public void update(GamePanel gp){
         if(direction == LEFT){
             x -= speed;
         }
@@ -34,7 +41,7 @@ public class Entity {
             y -= speed;
         }
         if(direction == UP){
-            y -= speed;
+            y += speed;
         }
     }
 
@@ -43,7 +50,7 @@ public class Entity {
     }
 
     private void setSprites(){
-        sprite = loadSprite("defaultSprite-1");
+        sprite = loadSprite("/defaultSprite-1");
     }
 
     private BufferedImage loadSprite(String imgPath){

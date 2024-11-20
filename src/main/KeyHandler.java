@@ -1,17 +1,23 @@
+package main;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 
-public class GameState extends KeyAdapter{
+public class KeyHandler extends KeyAdapter{
 
-    private KeyHandler keyHandler;
-    
+    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    GamePanel gp;
+
+    public KeyHandler(GamePanel panel){
+        gp = panel;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if(state == GAMESTATE){
+        if(gp.state == GamePanel.GAME_STATE){
             if(code == KeyEvent.VK_W){
                 upPressed = true;
             }
@@ -26,10 +32,14 @@ public class GameState extends KeyAdapter{
             }
         }
 
-        else if (state == TITLESTATE){
+        else if (gp.state == GamePanel.TITLE_STATE){
             if(code == KeyEvent.VK_SPACE){
-                state = GAMESTATE;
+                gp.state = GamePanel.GAME_STATE;
             }
+        }
+
+        if(code == KeyEvent.VK_ESCAPE){
+            Main.window.dispatchEvent(new WindowEvent(Main.window, WindowEvent.WINDOW_CLOSING));
         }
         
     }
@@ -38,7 +48,7 @@ public class GameState extends KeyAdapter{
     public void keyReleased(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if(state == GAMESTATE){
+        if(gp.state == GamePanel.GAME_STATE){
             if(code == KeyEvent.VK_W){
                 upPressed = false;
             }
@@ -53,7 +63,7 @@ public class GameState extends KeyAdapter{
             }
         }
         
-        else if (state == TITLESTATE){
+        else if (gp.state == GamePanel.TITLE_STATE){
 
         }
 
