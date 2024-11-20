@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import main.GamePanel;
+import main.UtilityTool;
 
 public class Entity {
     public int x, y, speed, direction, width, height;
@@ -50,18 +51,7 @@ public class Entity {
     }
 
     public void setSprites(){
-        sprite = loadSprite("/defaultSprite-1");
+        sprite = UtilityTool.loadSprite("defaultSprite-1");
     }
 
-    public BufferedImage loadSprite(String imgPath){
-        BufferedImage image = null;
-
-        try {
-            image = ImageIO.read(getClass().getResourceAsStream("/sprites" + imgPath + ".png"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return image;
-    }
 }

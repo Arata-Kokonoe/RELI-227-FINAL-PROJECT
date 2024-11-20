@@ -3,6 +3,8 @@ package main;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+
 public class UtilityTool {
     public static BufferedImage scaleImage(BufferedImage original, int width, int height){
 
@@ -12,5 +14,17 @@ public class UtilityTool {
         g2.dispose();
         
         return scaledImage;
+    }
+
+    public static BufferedImage loadSprite(String imgPath){
+        BufferedImage image = null;
+
+        try {
+            image = ImageIO.read(main.Main.class.getResourceAsStream("/res/" + imgPath + ".png"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return image;
     }
 }

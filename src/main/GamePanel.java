@@ -13,13 +13,14 @@ import javax.swing.JPanel;
 
 import entities.Entity;
 import entities.Player;
+import tile.RoomManager;
 
 public class GamePanel extends JPanel implements Runnable{
     
     //SCREEN SETTINGS
     public static final int TILE_SIZE = 48;
-    public final int MAX_COL = 20;
-    public final int MAX_ROW = 12;
+    public static final int MAX_COL = 20;
+    public static final int MAX_ROW = 12;
     public int screenWidth = TILE_SIZE * MAX_COL;
     public int screenHeight = TILE_SIZE * MAX_ROW;
 
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
     
     //SYSTEM
     public KeyHandler keyH = new KeyHandler(this);
+    public RoomManager rm = new RoomManager(this);
     private Thread gameThread;
     
     //ENTITIES
