@@ -12,7 +12,7 @@ public class Tile {
 
     public Tile(){
         
-        image = UtilityTool.scaleImage(UtilityTool.loadSprite("/Dante-1"), GamePanel.TILE_SIZE, GamePanel.TILE_SIZE*2);
+        image = UtilityTool.scaleImage(UtilityTool.loadSprite("Dante-1"), GamePanel.TILE_SIZE, GamePanel.TILE_SIZE*2);
         collision = false;
 
     }

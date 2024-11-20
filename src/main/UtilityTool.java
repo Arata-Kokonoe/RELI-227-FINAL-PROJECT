@@ -20,7 +20,7 @@ public class UtilityTool {
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(main.Main.class.getResourceAsStream("/res/" + imgPath + ".png"));
+            image = ImageIO.read(main.Main.class.getClassLoader().getResourceAsStream("res/" + imgPath + ".png"));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,7 +29,7 @@ public class RoomManager {
         tileMap = new int[GamePanel.MAX_COL][GamePanel.MAX_ROW];
 
         getTileImage();
-        loadMap("/res/Dante-1"); 
+        loadMap("/room01.txt"); 
     }
 
     public void getTileImage(){
@@ -50,11 +52,7 @@ public class RoomManager {
 
     public void loadMap(String filePath){
         try {
-            InputStream is = main.Main.class.getResourceAsStream(filePath);
-            BufferedImage test = UtilityTool.loadSprite("Dante-1");
-
-            System.out.println(is == null);
-            System.out.println(test == null);
+            InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             
             int col = 0;
@@ -70,7 +68,7 @@ public class RoomManager {
                 
                 while (col < GamePanel.MAX_COL) {
                     
-                    String numbers[] = line.split(",");
+                    String numbers[] = line.split(" ");
 
                     int num = Integer.parseInt(numbers[col]);
 
@@ -106,7 +104,7 @@ public class RoomManager {
            
             roomCol++;
 
-            if(roomCol == gp.MAX_COL){
+            if(roomCol == GamePanel.MAX_COL){
                 roomCol = 0;
                 roomRow++;
             }
