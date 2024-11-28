@@ -20,6 +20,7 @@ public class RoomManager {
     GamePanel gp;
     public Tile[] tile;
     public int tileMap[][];
+    public BufferedImage tileset;
 
     public RoomManager(GamePanel gp){
 
@@ -29,12 +30,52 @@ public class RoomManager {
         tileMap = new int[GamePanel.MAX_COL][GamePanel.MAX_ROW];
 
         getTileImage();
-        loadMap("/room01.txt"); 
+        loadMap("/res/rooms/room01"); 
     }
 
     public void getTileImage(){
 
-        setup(0, "limbo_center", true);
+        try{
+            BufferedImage tileset = UtilityTool.loadSprite("tiles/limbo_tileset");
+            tile[0] = new Tile();
+            tile[0].image = UtilityTool.loadSprite("tiles/blank_tile");
+            tile[1] = new Tile();
+            tile[1].image = tileset.getSubimage(0, 0, 48, 48);
+            tile[2] = new Tile();
+            tile[2].image = tileset.getSubimage(48, 0, 48, 48);
+            tile[3] = new Tile();
+            tile[3].image = tileset.getSubimage(96, 0, 48, 48);
+            tile[4] = new Tile();
+            tile[4].image = tileset.getSubimage(144, 0, 48, 48);
+            tile[5] = new Tile();
+            tile[5].image = tileset.getSubimage(192, 0, 48, 48);
+            tile[6] = new Tile();
+            tile[6].image = tileset.getSubimage(0, 48, 48, 48);
+            tile[7] = new Tile();
+            tile[7].image = tileset.getSubimage(48, 48, 48, 48);
+            tile[8] = new Tile();
+            tile[8].image = tileset.getSubimage(96, 48, 48, 48);
+            tile[9] = new Tile();
+            tile[9].image = tileset.getSubimage(144, 48, 48, 48);
+            tile[10] = new Tile();
+            tile[10].image = tileset.getSubimage(192, 48, 48, 48);
+            tile[11] = new Tile();
+            tile[11].image = tileset.getSubimage(0, 96, 48, 48);
+            tile[12] = new Tile();
+            tile[12].image = tileset.getSubimage(48, 96, 48, 48);
+            tile[13] = new Tile();
+            tile[13].image = tileset.getSubimage(96, 96, 48, 48);
+            tile[14] = new Tile();
+            tile[14].image = tileset.getSubimage(144, 96, 48, 48);
+            tile[15] = new Tile();
+            tile[15].image = tileset.getSubimage(192, 96, 48, 48);
+            tile[16] = new Tile();
+            tile[16].image = tileset.getSubimage(0, 144, 48, 48);
+
+        } catch(Exception e){
+
+        }
+
 
     }
 
@@ -56,7 +97,7 @@ public class RoomManager {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             
             int col = 0;
-            int row = 6;
+            int row = 0;
 
             for (int i = 0; i < row; i++){
                 br.readLine();

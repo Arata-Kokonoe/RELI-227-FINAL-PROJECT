@@ -123,6 +123,8 @@ public class GamePanel extends JPanel implements Runnable{
                 e.draw(g2);
             }
 
+            rm.draw(g2);
+
             drawList.clear();
         }
 

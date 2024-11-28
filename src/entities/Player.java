@@ -27,6 +27,6 @@ public class Player extends Entity {
     }
 
     public void setSprites(){
-        sprite = UtilityTool.scaleImage(UtilityTool.loadSprite("Dante-1"), GamePanel.TILE_SIZE, GamePanel.TILE_SIZE*2);
+        sprite = UtilityTool.scaleImage(UtilityTool.loadSprite("Dante-1"), GamePanel.TILE_SIZE/2, GamePanel.TILE_SIZE);
     }
 }
