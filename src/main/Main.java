@@ -11,7 +11,7 @@ public class Main {
         window.setTitle("change name later");
         //window.setUndecorated(true);
 
-        GamePanel gamePanel = new GamePanel();
+        GameLoop gamePanel = new GameLoop();
         window.add(gamePanel);  // adds the jpanel to the jframe
         
         window.pack();  //causes window to be sized to fit preferred size and layouts of its subcompoenents (i.e. GamePanel)

@@ -1,4 +1,4 @@
-package tile;
+package room;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -12,22 +12,23 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
-import main.GamePanel;
+import main.GameLoop;
+import main.GameState;
 import main.UtilityTool;
 
-public class RoomManager {
+public class TileManager {
 
-    GamePanel gp;
+    GameState gameState;
     public Tile[] tile;
     public int tileMap[][];
     public BufferedImage tileset;
 
-    public RoomManager(GamePanel gp){
+    public TileManager(GameState state){
 
-        this.gp = gp;
+        this.gameState = state;
         
         tile = new Tile[10]; //array holds different types of tiles (aka. tile[0] = grass tile)
-        tileMap = new int[GamePanel.MAX_COL][GamePanel.MAX_ROW];
+        tileMap = new int[GameLoop.MAX_COL][GameLoop.MAX_ROW];
 
         getTileImage();
         loadMap("/res/rooms/room01"); 
@@ -79,17 +80,19 @@ public class RoomManager {
 
     }
 
+    /*
     public void setup(int index, String imageName, boolean collision){
 
         try {
             tile[index] = new Tile();
             tile[index].image = UtilityTool.loadSprite("tiles/" + imageName);
-            tile[index].image = UtilityTool.scaleImage(tile[index].image, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+            tile[index].image = UtilityTool.scaleImage(tile[index].image, GameLoop.TILE_SIZE, GameLoop.TILE_SIZE);
             tile[index].collision = collision;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+    */
 
     public void loadMap(String filePath){
         try {
@@ -103,11 +106,11 @@ public class RoomManager {
                 br.readLine();
             }
 
-            while(col < GamePanel.MAX_COL && row < GamePanel.MAX_ROW){
+            while(col < GameLoop.MAX_COL && row < GameLoop.MAX_ROW){
                 
                 String line = br.readLine();
                 
-                while (col < GamePanel.MAX_COL) {
+                while (col < GameLoop.MAX_COL) {
                     
                     String numbers[] = line.split(" ");
 
@@ -117,7 +120,7 @@ public class RoomManager {
                     col++;
                 }
 
-                if (col == GamePanel.MAX_COL) {
+                if (col == GameLoop.MAX_COL) {
                     col = 0;
                     row++;
                 }
@@ -134,18 +137,18 @@ public class RoomManager {
         int roomCol = 0;
         int roomRow = 0;
 
-        while(roomCol < GamePanel.MAX_COL && roomRow < GamePanel.MAX_ROW){
+        while(roomCol < GameLoop.MAX_COL && roomRow < GameLoop.MAX_ROW){
             
             int tileNum = tileMap[roomCol][roomRow];
 
-            int screenX = roomCol * GamePanel.TILE_SIZE;    //calculate worldX by multiplying tileSize * worldCol
-            int screenY = roomRow * GamePanel.TILE_SIZE;    //same with worldY
+            int screenX = roomCol * GameLoop.TILE_SIZE;    //calculate worldX by multiplying tileSize * worldCol
+            int screenY = roomRow * GameLoop.TILE_SIZE;    //same with worldY
 
             g2.drawImage(tile[tileNum].image, screenX, screenY, null);
            
             roomCol++;
 
-            if(roomCol == GamePanel.MAX_COL){
+            if(roomCol == GameLoop.MAX_COL){
                 roomCol = 0;
                 roomRow++;
             }

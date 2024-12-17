@@ -1,57 +1,82 @@
+//  PACKAGE
 package entities;
-import java.awt.Graphics2D;
+
+//=================================================================================================================
+//  IMPORTS
+    import java.awt.Graphics2D;
+    import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import main.GamePanel;
-import main.UtilityTool;
+import core.Position;
+    import core.Size;
+    import main.Camera;
+//=================================================================================================================
+import main.GameState;
 
-public class Entity {
-    public int x, y, speed, direction, width, height;
-    public Hitbox hb;
 
-    public BufferedImage sprite;
+//=================================================================================================================
+public abstract class Entity {
+//=================================================================================================================
 
-    private final int LEFT = 0;
-    private final int RIGHT = 1;
-    private final int UP = 2;
-    private final int DOWN = 3;
 
-    public Entity(){
+    //=============================================================================================================
+    //  MEMBER VARIABLES
+        protected Position position;
+        protected Size size;
+    //=============================================================================================================
 
-        direction = -1;
-        x = 100;
-        y = 100;
-        speed = 2;
 
-        setSprites();
-        width = sprite.getWidth();
-        height = sprite.getHeight();
+    //=============================================================================================================
+    //  ABSTRACT METHODS
+        public abstract void update(GameState gameState);
+        public abstract void draw(Graphics2D g2, Camera camera);
+        public abstract void setSpriteSheet();
+        protected abstract void handleCollisions(List<Entity> collided);
+    //=============================================================================================================
 
-    }
+    //=============================================================================================================
+        protected BufferedImage setup(String imagePath){
 
-    public void update(GamePanel gp){
-        if(direction == LEFT){
-            x -= speed;
+            BufferedImage image = null;
+
+            try {
+                image = ImageIO.read(getClass().getResourceAsStream("/res" + imagePath + ".png"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return image;
+        } // setup(String imagePath)
+    //  Reads an image from specified image path in res folder and returns it.
+    //=============================================================================================================
+
+    //=============================================================================================================
+        public boolean collidesWith(Entity other){
+            return this.getHitbox().collidesWith(other.getHitbox());
+        } // collidesWith(Entity other)
+    //  Returns a boolean that tells whether or not an entity is colliding with another.
+    //=============================================================================================================
+
+
+    //=============================================================================================================
+    //  GETTERS
+        public Hitbox getHitbox(){
+            return new Hitbox(new Rectangle((int)position.getX(), (int)position.getY(), size.getWidth(), size.getHeight()));
         }
-        if(direction == RIGHT){
-            x += speed;
-        }
-        if(direction == DOWN){
-            y -= speed;
-        }
-        if(direction == UP){
-            y += speed;
-        }
-    }
 
-    public void draw(Graphics2D g2){
-        g2.drawImage(sprite, x, y, null);
-    }
+        public Size getSize(){
+            return size;
+        }
 
-    public void setSprites(){
-        sprite = UtilityTool.loadSprite("defaultSprite-1");
-    }
+        public Position getPosition(){
+            return position;
+        }
+    //=============================================================================================================
 
-}
+
+//=================================================================================================================
+}   // class Entity
+//=================================================================================================================
