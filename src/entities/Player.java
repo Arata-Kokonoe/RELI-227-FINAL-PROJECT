@@ -27,26 +27,27 @@ public class Player extends MovingEntity {
     }
 
     @Override
-    protected void handleCollisions(List<Entity> collided) {
-        
+    protected void handleCollisions(Hitbox toMove, List<Entity> collided) {
+        //deal with tile collisions
+        //deal with other entity collisions
     }
 
     @Override
     protected void setMovement(GameState gameState) {
         Input input = gameState.getInput();
-        if(input.isPressed(KeyEvent.VK_L)) {
+        if(input.isPressed(KeyEvent.VK_A)) {
             left = true;
         }
         else left = false;
-        if(input.isPressed(KeyEvent.VK_R)) {
+        if(input.isPressed(KeyEvent.VK_D)) {
             right = true;
         }
         else right = false;
-        if(input.isPressed(KeyEvent.VK_U)) {
+        if(input.isPressed(KeyEvent.VK_W)) {
             up = true;
         }
         else up = false;
-        if(input.isPressed(KeyEvent.VK_D)) {
+        if(input.isPressed(KeyEvent.VK_S)) {
             down = true;
         }
         else down = false;

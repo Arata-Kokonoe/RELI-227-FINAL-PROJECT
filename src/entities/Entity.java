@@ -34,8 +34,9 @@ public abstract class Entity {
         public abstract void update(GameState gameState);
         public abstract void draw(Graphics2D g2, Camera camera);
         public abstract void setSpriteSheet();
-        protected abstract void handleCollisions(List<Entity> collided);
+        protected abstract void handleCollisions(Hitbox thisHitbox, List<Entity> collided);
     //=============================================================================================================
+
 
     //=============================================================================================================
         protected BufferedImage setup(String imagePath){
@@ -50,8 +51,9 @@ public abstract class Entity {
 
             return image;
         } // setup(String imagePath)
-    //  Reads an image from specified image path in res folder and returns it.
+        //  Reads an image from specified image path in res folder and returns it.
     //=============================================================================================================
+
 
     //=============================================================================================================
         public boolean collidesWith(Entity other){

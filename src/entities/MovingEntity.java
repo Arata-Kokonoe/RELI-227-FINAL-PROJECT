@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 import core.Vector2D;
 import main.Camera;
@@ -47,7 +48,7 @@ public abstract class MovingEntity extends Entity{
 
             }
 
-            handleCollisions(gameState.getCollidingGameObjects(tempHitbox));
+            handleCollisions(tempHitbox, gameState.getCollidingGameObjects(tempHitbox));
             
             animationManager.update(getDirection());
         }
@@ -63,6 +64,8 @@ public abstract class MovingEntity extends Entity{
         }
 
         protected abstract void setMovement(GameState gameState);
+        @Override
+        protected abstract void handleCollisions(Hitbox toMove, List<Entity> collided);
     //=============================================================================================================
 
 

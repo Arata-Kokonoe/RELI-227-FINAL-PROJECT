@@ -6,6 +6,9 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 public class UtilityTool {
+    
+
+    /*
     public static BufferedImage scaleImage(BufferedImage original, int width, int height){
 
         BufferedImage scaledImage = new BufferedImage(width, height, original.getType());
@@ -27,4 +30,6 @@ public class UtilityTool {
 
         return image;
     }
+    */
+
 }

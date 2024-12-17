@@ -15,8 +15,8 @@ package main;
 
     import javax.swing.JFrame;
     import core.Position;
-
-    import room.Room;
+import entities.Entity;
+import room.Room;
 //=================================================================================================================
 
 
@@ -54,7 +54,7 @@ public class GameFrame extends JFrame {
         public GameFrame(String title) {
             super(title);
             this.setResizable(false);
-            this.setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
+            this.setSize(GAME_WIDTH, GAME_HEIGHT);
             this.setBackground(Color.BLACK);
             tempScreen = new BufferedImage(GAME_WIDTH, GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         }
@@ -107,8 +107,12 @@ public class GameFrame extends JFrame {
             g2temp.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             
             //draw all elements to temp image
-            Camera camera = gameState.getCamera();
+            renderRoom(g2temp, gameState);
             //for all entities in gameState, if in camera view, draw.
+            Camera camera = gameState.getCamera();
+            for (Entity e : gameState.getEntities()) {
+                if(camera.isInView(e)) e.draw(g2temp, camera);
+            }
 
             //dispose of the graphics of temp image
             g2temp.dispose();
@@ -126,16 +130,16 @@ public class GameFrame extends JFrame {
 
 
     //=============================================================================================================
-        private void renderRoom(GameState status, Graphics2D graphics) {
-            Room room = status.getCurrentRoom();
-            Camera camera = status.getCamera();
+        private void renderRoom(Graphics2D g2d, GameState gameState) {
+            Room room = gameState.getCurrentRoom();
+            Camera camera = gameState.getCamera();
 
-            Position start = room.getViewableEndingGridPosition(camera);
+            Position start = room.getViewableStartingGridPosition(camera);
             Position end = room.getViewableEndingGridPosition(camera);
 
             for(int x = start.intX(); x < end.intX(); x++) {
                 for(int y = start.intY(); y < end.intY(); y++) {
-                    graphics.drawImage(
+                    g2d.drawImage(
                             room.getTileArr()[x][y].getSprite(),
                             x * ORIGINAL_TILE_SIZE - camera.getPosition().intX(),
                             y * ORIGINAL_TILE_SIZE - camera.getPosition().intY(),
@@ -143,7 +147,7 @@ public class GameFrame extends JFrame {
                     );
                 }
             }
-        } // renderRoom(GameState status, Graphics2D graphics)
+        } // renderRoom(GameState gameState, Graphics2D graphics)
     //  Draws the tiles of the current room the user is in.
     //=============================================================================================================
 

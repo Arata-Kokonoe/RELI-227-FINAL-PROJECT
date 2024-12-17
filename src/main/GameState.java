@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import javax.swing.text.Position;
-
 import core.Size;
+import core.Position;
 import entities.Entity;
 import entities.Hitbox;
 import entities.Player;
 import room.Room;
+import room.RoomManager;
 import room.TileManager;
 
 public class GameState {
@@ -20,7 +20,6 @@ public class GameState {
     //SYSTEM
     private Input input;
     private Camera camera;
-    private TileManager tm = new TileManager(this);
     private Thread gameThread;
     public Random rng;
     
@@ -35,8 +34,7 @@ public class GameState {
     public static final int PLAY_STATUS = 1;
 
     //ROOM
-    protected Room currentRoom;
-
+    private RoomManager roomManager;
 
     public GameState(long seed){
         //SYSTEM
@@ -51,6 +49,10 @@ public class GameState {
 
         //STATUS
         status = PLAY_STATUS;
+
+        //ROOM & FLOOR
+        roomManager = new RoomManager("limbo");
+        roomManager.add(0);
     }
 
     public void update() {
@@ -78,16 +80,16 @@ public class GameState {
             return entities;
         }
 
-        public Room getCurrentRoom() {
-            return currentRoom;
-        }
-
         public Camera getCamera() {
             return camera;
         }
 
+        public Room getCurrentRoom(){
+            return roomManager.getCurrentRoom();
+        }
+
         public Position getRandomPosition() {
-            return currentRoom.getRandomPosition();
+            return roomManager.getCurrentRoom().getRandomPosition();
         }
 
         public List<Entity> getCollidingGameObjects(Hitbox hitbox) {
@@ -98,9 +100,6 @@ public class GameState {
             return collided;
         }
 
-        public void setCurrentRoom(Room newRoom) {
-            currentRoom = newRoom;
-        }
     //=================================================================================================================
 
 }

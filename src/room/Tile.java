@@ -1,7 +1,6 @@
 package room;
 
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 
 import javax.imageio.ImageIO;
 
@@ -32,7 +31,7 @@ public class Tile {
     //=============================================================================================================
 
 
-    public BufferedImage getImage(){
+    public BufferedImage getSprite(){
         return image;
     }
 }
