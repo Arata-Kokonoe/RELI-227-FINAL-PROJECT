@@ -23,6 +23,7 @@ public class Room {
         value = v;
         tileManager = new TileManager(floor);
         tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
+        size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
         setupRoom();
     }
 
@@ -30,6 +31,11 @@ public class Room {
 
         if(value == -1){
             loadTileArr("/res/rooms/room_-1");
+        }
+        if(value == -2){
+            tileArr = new Tile[GameFrame.MAX_COL*2][GameFrame.MAX_ROW*2];
+            size = new Size(GameFrame.MAX_COL * 2 * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * 2 * GameFrame.ORIGINAL_TILE_SIZE);
+            loadTileArr("/res/rooms/room_-2");
         }
 
     }
@@ -46,11 +52,11 @@ public class Room {
                 br.readLine();
             }
 
-            while(col < GameFrame.MAX_COL && row < GameFrame.MAX_ROW){
+            while(col < tileArr.length && row < tileArr[col].length){
                 
                 String line = br.readLine();
                 
-                while (col < GameFrame.MAX_COL) {
+                while (col < tileArr.length) {
                     
                     String numbers[] = line.split(" ");
 
@@ -60,7 +66,7 @@ public class Room {
                     col++;
                 }
 
-                if (col == GameFrame.MAX_COL) {
+                if (col == tileArr.length) {
                     col = 0;
                     row++;
                 }
@@ -89,6 +95,7 @@ public class Room {
     }
 
     public Position getViewableStartingGridPosition(Camera camera) {
+        //System.out.println("start of visible tileArr = " + Math.max(0, camera.getPosition().getX() / GameFrame.ORIGINAL_TILE_SIZE - BUFFER) + ", " + Math.max(0, camera.getPosition().getY() / GameFrame.ORIGINAL_TILE_SIZE - BUFFER));
         return new Position(
                 Math.max(0, camera.getPosition().getX() / GameFrame.ORIGINAL_TILE_SIZE - BUFFER),
                 Math.max(0, camera.getPosition().getY() / GameFrame.ORIGINAL_TILE_SIZE - BUFFER)
@@ -96,6 +103,7 @@ public class Room {
     }
 
     public Position getViewableEndingGridPosition(Camera camera) {
+        //System.out.println("end of visible tileArr = " + Math.min(tileArr.length, camera.getPosition().getX() / GameFrame.ORIGINAL_TILE_SIZE + camera.getSize().getWidth() / GameFrame.ORIGINAL_TILE_SIZE + BUFFER) + ", " + Math.min(tileArr[0].length, camera.getPosition().getY() / GameFrame.ORIGINAL_TILE_SIZE + camera.getSize().getHeight() / GameFrame.ORIGINAL_TILE_SIZE + BUFFER));
         return new Position(
                 Math.min(tileArr.length, camera.getPosition().getX() / GameFrame.ORIGINAL_TILE_SIZE + camera.getSize().getWidth() / GameFrame.ORIGINAL_TILE_SIZE + BUFFER),
                 Math.min(tileArr[0].length, camera.getPosition().getY() / GameFrame.ORIGINAL_TILE_SIZE + camera.getSize().getHeight() / GameFrame.ORIGINAL_TILE_SIZE + BUFFER)

@@ -12,7 +12,7 @@ public class AnimationManager {
     private int currentFrameTime;
     private int frameIndex;
     private int directionIndex;
-    private Entity entity;
+    private MovingEntity entity;
 
     public AnimationManager(MovingEntity entity) {
         currentAnimationSheet = entity.getAnimationSheet();
@@ -33,20 +33,30 @@ public class AnimationManager {
         );
     }
 
-    public void update(String direction) {
-        currentFrameTime++;
-        if(direction == "S" || direction == "SW" || direction == "SE") directionIndex = 0;
-        else if (direction == "N" || direction == "NW" || direction == "NE") directionIndex = 1;
-        else if (direction == "E") directionIndex = 2;
-        else if (direction == "W") directionIndex = 3;
+    public void update() {
+        if(entity.isMoving()){
 
-        if(currentFrameTime >= updatesPerFrame) {
-            currentFrameTime = 0;
-            frameIndex++;
+            currentFrameTime++;
 
-            if(frameIndex >= currentAnimationSheet.getWidth() / entity.getSize().getWidth()) {
-                frameIndex = 0;
+            String currentDirection = entity.getMoveOrder().getCurrent();
+
+            if (currentDirection == "left") directionIndex = 3;
+            else if (currentDirection == "right") directionIndex = 2;
+            else if (currentDirection == "up") directionIndex = 1;
+            else if (currentDirection == "down") directionIndex = 0;
+
+            if(currentFrameTime >= updatesPerFrame) {
+                currentFrameTime = 0;
+                frameIndex++;
+
+                if(frameIndex >= currentAnimationSheet.getWidth() / entity.getSize().getWidth()) {
+                    frameIndex = 0;
+                }
             }
+        }
+        else {
+            directionIndex = 0;
+            frameIndex = 0;
         }
 
     }

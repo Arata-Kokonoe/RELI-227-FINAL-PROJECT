@@ -117,7 +117,12 @@ public class GameFrame extends JFrame {
             //dispose of the graphics of temp image
             g2temp.dispose();
 
-            //check if fullscreen
+            if(gameState.settingsChanged == true){
+                if(gameState.fullscreen == true) setFullscreen();
+                else if (gameState.fullscreen == false) setWindowed();
+                gameState.settingsChanged = false;
+            }
+            
 
             //draw to bufferStrategy
             g2d.setColor(Color.WHITE);
@@ -145,6 +150,13 @@ public class GameFrame extends JFrame {
                             y * ORIGINAL_TILE_SIZE - camera.getPosition().intY(),
                             null
                     );
+                }
+            }
+
+            for(int i = 0; i < room.getWidth() / 16; i++){
+                for(int j = 0; j < room.getHeight() / 16; j++){
+                    g2d.setColor(Color.RED);
+                    if(room.getTileArr()[i][j].getCollision()) g2d.drawRect(i * ORIGINAL_TILE_SIZE, j * ORIGINAL_TILE_SIZE, 16, 16);
                 }
             }
         } // renderRoom(GameState gameState, Graphics2D graphics)

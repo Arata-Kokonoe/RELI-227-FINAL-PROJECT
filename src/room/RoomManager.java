@@ -10,7 +10,7 @@ public class RoomManager {
 
     public RoomManager(String floor){
         currentFloor = floor;
-        currentRoom = new Room(-1, currentFloor);
+        currentRoom = new Room(-2, currentFloor);
         roomList = new ArrayList<Room>();
     }
 

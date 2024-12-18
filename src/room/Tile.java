@@ -6,8 +6,8 @@ import javax.imageio.ImageIO;
 
 public class Tile {
 
-    public BufferedImage image;
-    public boolean collision;
+    private BufferedImage image;
+    private boolean collision;
 
     public Tile(){
         image = setup("/tiles/blank_tile");
@@ -33,5 +33,16 @@ public class Tile {
 
     public BufferedImage getSprite(){
         return image;
+    }
+    public void setSprite(BufferedImage sprite){
+        image = sprite;
+    }
+
+    public boolean getCollision(){
+        return collision;
+    }
+
+    public void setCollision(boolean collision){
+        this.collision = collision;
     }
 }

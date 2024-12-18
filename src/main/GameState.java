@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -22,6 +23,7 @@ public class GameState {
     private Camera camera;
     private Thread gameThread;
     public Random rng;
+    public boolean fullscreen, settingsChanged;
     
     //ENTITIES
     public Player player;
@@ -46,23 +48,38 @@ public class GameState {
         //PLAYER
         this.player = new Player();
         this.entities.add(player);
+        camera.focusOn(player);
 
         //STATUS
         status = PLAY_STATUS;
 
         //ROOM & FLOOR
-        roomManager = new RoomManager("limbo");
+        roomManager = new RoomManager("limbo2");
         roomManager.add(0);
     }
 
     public void update() {
-        sortObjectsByPosition();
-        entities.forEach(entity -> entity.update(this));
-        camera.update(this);
+        if(status == PLAY_STATUS){
+            sortObjectsByPosition();
+            entities.forEach(entity -> entity.update(this));
+            camera.update(this);
+            checkControls();
+        }
+        else{}
     }
 
     private void sortObjectsByPosition() {
         entities.sort(Comparator.comparing(entity -> entity.getPosition().getY()));
+    }
+
+    public void checkControls(){
+        //PLAY STATUS
+        if(input.isPressed(KeyEvent.VK_F)){
+            if(fullscreen == true) fullscreen = false;
+            else fullscreen = true;
+            settingsChanged = true;
+            input.unPress(KeyEvent.VK_F);
+        }
     }
 
 

@@ -12,7 +12,8 @@ import javax.imageio.ImageIO;
 
 import core.Position;
     import core.Size;
-    import main.Camera;
+import core.Vector2D;
+import main.Camera;
 //=================================================================================================================
 import main.GameState;
 
@@ -34,7 +35,6 @@ public abstract class Entity {
         public abstract void update(GameState gameState);
         public abstract void draw(Graphics2D g2, Camera camera);
         public abstract void setSpriteSheet();
-        protected abstract void handleCollisions(Hitbox thisHitbox, List<Entity> collided);
     //=============================================================================================================
 
 
@@ -66,7 +66,7 @@ public abstract class Entity {
     //=============================================================================================================
     //  GETTERS
         public Hitbox getHitbox(){
-            return new Hitbox(new Rectangle((int)position.getX(), (int)position.getY(), size.getWidth(), size.getHeight()));
+            return new Hitbox(new Rectangle(position.intX(), position.intY(), size.getWidth(), size.getHeight()));
         }
 
         public Size getSize(){
