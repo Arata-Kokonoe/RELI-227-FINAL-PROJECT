@@ -67,9 +67,10 @@ public class Camera {
         public void update(GameState gameState) {
             if(objectWithFocus != null) {
                 Position objectPosition = objectWithFocus.getPosition();
+                Size objectSize = objectWithFocus.getSize();
 
-                this.position.setX(objectPosition.getX() - size.getWidth() / 2);
-                this.position.setY(objectPosition.getY() - size.getHeight() / 2);
+                this.position.setX(objectPosition.getX() - objectSize.getWidth()/2 - size.getWidth()/2);
+                this.position.setY(objectPosition.getY() - objectSize.getHeight()/2 - size.getHeight()/2);
 
                 clampWithinBounds(gameState);
                 calculateViewBounds();

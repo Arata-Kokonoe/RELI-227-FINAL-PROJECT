@@ -10,12 +10,12 @@ public class RoomManager {
 
     public RoomManager(String floor){
         currentFloor = floor;
-        currentRoom = new Room(-2, currentFloor);
+        currentRoom = new Room(-1, currentFloor);
         roomList = new ArrayList<Room>();
     }
 
-    public void add(int v){
-        roomList.add(new Room(v, currentFloor));
+    public void change(int v){
+        currentRoom = new Room(v, currentFloor);
     }
 
     public Room getCurrentRoom(){

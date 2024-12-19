@@ -13,7 +13,7 @@ public class TileManager {
 
     public TileManager(String floor){
         
-        tile = new Tile[18]; //array holds different types of tiles (aka. tile[0] = grass tile)
+        tile = new Tile[29]; //array holds different types of tiles (aka. tile[0] = grass tile)
 
         getTileSet(floor);
     }
@@ -74,9 +74,16 @@ public class TileManager {
             tile[16] = new Tile();
             tile[16].setSprite(tileset.getSubimage(0, 144, 48, 48));
             */
-            tile[0] = new Tile();
-            tile[0].setSprite(setup("/tiles/blank16_tile"));
-            int count = 1;
+
+            //tiles 1-9 should not be used
+            for(int i = 0; i < 11; i++){
+                tile[i] = new Tile();
+                tile[i].setSprite(setup("/tiles/blank16_tile"));
+                tile[i].setCollision(true);
+            }
+            tile[11] = new Tile();
+            tile[11].setSprite(setup("/tiles/limboWall_tileset").getSubimage(0, 0, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+            int count = 12;
             for(int i = 0; i < 4; i++){
                 for(int j = 0; j < 4; j++){
                     tile[count] = new Tile();
@@ -84,7 +91,11 @@ public class TileManager {
                     count++;
                 }
             }
-            for(int i = 1; i < 17; i++){
+            tile[27] = new Tile();
+            tile[27].setSprite(setup("/tiles/limboWall_tileset").getSubimage(GameFrame.ORIGINAL_TILE_SIZE, 0, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+            tile[28] = new Tile();
+            tile[28].setSprite(setup("/tiles/limboWall_tileset").getSubimage(0, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+            for(int i = 12; i < 29; i++){
                 tile[i].setCollision(true);
             }
 

@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import org.w3c.dom.css.Rect;
-
+import core.Position;
 import core.Vector2D;
 import main.Camera;
 
@@ -22,20 +21,23 @@ public class Hitbox{
     }
 
     public Hitbox apply(Vector2D velocity){
-        bounds.x = (int)Math.round(bounds.x + velocity.getX());
-        bounds.y = (int)Math.round(bounds.y + velocity.getY());
+        bounds.x = (int)(bounds.x + velocity.getX());
+        bounds.y = (int)(bounds.y + velocity.getY());
 
         return this;
     }
 
     public void draw(Graphics2D g2){
-        g2.setColor(Color.RED);
         g2.draw(bounds);
+        g2.drawLine(leftX(), topY(), rightX(), topY());
+        g2.drawLine(leftX(), topY(), leftX(), botY());
+        g2.drawLine(rightX(), topY(), rightX(), botY());
+        g2.drawLine(leftX(), botY(), rightX(), botY());
     }
 
     public void drawOnCamera(Graphics2D g2, Camera camera){
         g2.setColor(Color.RED);
-        Rectangle tempBounds = new Rectangle((int)(bounds.getX() - camera.getPosition().intX()), (int)bounds.getY() - camera.getPosition().intY(), (int)bounds.getWidth(), (int)bounds.getHeight());
+        Rectangle tempBounds = new Rectangle((int)(leftX() - camera.getPosition().intX()), topY() - camera.getPosition().intY(), (int)bounds.getWidth(), (int)bounds.getHeight());
         g2.draw(tempBounds);
     }
 
@@ -43,12 +45,30 @@ public class Hitbox{
         return bounds;
     }
 
-    public int getMiddleX(){
-        return (int)(bounds.getX() + bounds.getWidth()/2);
+    public int leftX(){
+        return bounds.x;
+    }
+    public int rightX(){
+        return bounds.x + (int)bounds.getWidth();
+    }
+    public int topY(){
+        return bounds.y;
+    }
+    public int botY(){
+        return bounds.y + (int)bounds.getHeight();
     }
 
-    public int getMiddleY(){
-        return (int)(bounds.getY() + bounds.getHeight()/2);
+    public Position topRightCorner(){
+        return new Position(bounds.x + (int)bounds.getWidth(), bounds.y);
+    }
+    public Position topLeftCorner(){
+        return new Position(bounds.x, bounds.y);
+    }
+    public Position botRightCorner(){
+        return new Position(bounds.x + (int)bounds.getWidth(), bounds.y + (int)bounds.getHeight());
+    }
+    public Position botLeftCorner(){
+        return new Position(bounds.x, bounds.y + (int)bounds.getHeight());
     }
 
 }

@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -8,7 +9,7 @@ import core.MoveOrder;
 import core.Vector2D;
 import main.Camera;
 import main.GameState;
-import room.Tile;
+import room.Room;
 
 public abstract class MovingEntity extends Entity{
 
@@ -27,8 +28,6 @@ public abstract class MovingEntity extends Entity{
     //  ABSTRACT METHODS
         @Override
         public void update(GameState gameState){
-            Hitbox tempHitbox = this.getHitbox();
-
             setMovement(gameState);
 
             int deltaX = 0;
@@ -40,17 +39,10 @@ public abstract class MovingEntity extends Entity{
             if(down) deltaY++;
 
             velocity = new Vector2D(deltaX, deltaY);
-            velocity.normalize();
             
             velocity.multiply(speed);
 
-            if(velocity.length() > 0){
-                
-                tempHitbox.apply(velocity);
-
-            }
-
-            handleCollisions(tempHitbox, gameState.getCollidingGameObjects(tempHitbox), gameState.getCurrentRoom().getTileArr());
+            handleCollisions(gameState.getCollidingGameObjects(this.getHitbox()), gameState.getCurrentRoom());
             
             animationManager.update();
         }
@@ -59,18 +51,19 @@ public abstract class MovingEntity extends Entity{
         public void draw(Graphics2D g2, Camera camera) {
             g2.drawImage(
                 animationManager.getSprite(),
-                this.getPosition().intX() - camera.getPosition().intX(),
-                this.getPosition().intY() - camera.getPosition().intY(),
+                this.getPosition().intX() - this.getSize().getWidth()/4  - camera.getPosition().intX(),
+                this.getPosition().intY() - (int)(this.getSize().getHeight()/1.8) - camera.getPosition().intY(),
                 null
                 ); 
-            g2.drawImage(
+            /*g2.drawImage(
                 animationManager.getSprite(),
-                this.getPosition().intX(),
-                this.getPosition().intY(),
+                this.getPosition().intX() - this.getSize().getWidth()/4 ,
+                this.getPosition().intY() - (int)(this.getSize().getHeight()/1.8),
                 null
                 );
+            drawToMove(g2);
             drawHitboxOnCamera(g2, camera);
-            drawHitbox(g2);
+            drawHitbox(g2);*/
         }
 
         public void drawHitboxOnCamera(Graphics2D g2, Camera camera){
@@ -78,7 +71,13 @@ public abstract class MovingEntity extends Entity{
         }
 
         public void drawHitbox(Graphics2D g2){
+            g2.setColor(Color.RED);
             this.getHitbox().draw(g2);
+        }
+
+        public void drawToMove(Graphics2D g2){
+            g2.setColor(Color.BLUE);
+            this.getHitbox().apply(new Vector2D(velocity.getX(), velocity.getY())).draw(g2);
         }
 
         public boolean isMoving(){
@@ -87,7 +86,7 @@ public abstract class MovingEntity extends Entity{
         }
 
         protected abstract void setMovement(GameState gameState);
-        protected abstract void handleCollisions(Hitbox toMove, List<Entity> collided, Tile[][] roomArr);
+        protected abstract void handleCollisions(List<Entity> collided, Room currentRoom);
     //=============================================================================================================
 
 
@@ -118,7 +117,7 @@ public abstract class MovingEntity extends Entity{
             if(x > 0 && y < 0) return "NE";
             if(x > 0 && y > 0) return "SE";
     
-            return "S";
+            return "null";
         }
     //=============================================================================================================
 

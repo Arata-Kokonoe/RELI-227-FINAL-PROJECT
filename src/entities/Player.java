@@ -1,28 +1,24 @@
 package entities;
 
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.font.GlyphMetrics;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
 import core.MoveOrder;
 import core.Position;
 import core.Size;
+import core.TileCoords;
 import core.Vector2D;
-import main.Camera;
 import main.GameFrame;
-import main.GameLoop;
 import main.GameState;
 import main.Input;
-import main.UtilityTool;
-import room.Tile;
+import room.Room;
 
 public class Player extends MovingEntity {
 
     public Player(){
-        position = new Position(50, 50);
+        position = new Position(0, 0);
         size = new Size(GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE*2);
         speed = 2;
         animationSheet = new BufferedImage(size.getWidth(), size.getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -32,7 +28,56 @@ public class Player extends MovingEntity {
     }
 
     @Override
-    protected void handleCollisions(Hitbox toMove, List<Entity> collided, Tile[][] roomArr) {
+    protected void handleCollisions(List<Entity> collided, Room room) {
+        TileCoords tile1, tile2;
+        System.out.println(velocity.getX() + " " + velocity.getY());
+
+        if(velocity.getY() > 0){
+            Hitbox toMove = getHitbox().apply(new Vector2D(0, velocity.getY()));
+            tile1 = room.positionToCoords(toMove.botLeftCorner());
+            tile2 = room.positionToCoords(toMove.botRightCorner());
+            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                velocity.multiplyY(0);
+                position.setY((tile1.getRow() * GameFrame.ORIGINAL_TILE_SIZE) - size.getHeight()/2.2);
+            }
+        }
+        else if(velocity.getY() < 0){
+            Hitbox toMove = getHitbox().apply(new Vector2D(0, velocity.getY()));
+            tile1 = room.positionToCoords(toMove.topLeftCorner());
+            tile2 = room.positionToCoords(toMove.topRightCorner());
+            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                velocity.multiplyY(0);
+                position.setY((tile1.getRow() * GameFrame.ORIGINAL_TILE_SIZE) + GameFrame.ORIGINAL_TILE_SIZE);
+            }
+        }
+
+        if(velocity.getX() < 0){
+            Hitbox toMove = getHitbox().apply(new Vector2D(velocity.getX(), 0));
+            tile1 = room.positionToCoords(toMove.botLeftCorner());
+            tile2 = room.positionToCoords(toMove.topLeftCorner());
+            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                velocity.multiplyX(0);
+                position.setX((tile1.getCol() * GameFrame.ORIGINAL_TILE_SIZE) + GameFrame.ORIGINAL_TILE_SIZE);
+            }
+        }
+        else if(velocity.getX() > 0){
+            Hitbox toMove = getHitbox().apply(new Vector2D(velocity.getX(), 0));
+            tile1 = room.positionToCoords(toMove.botRightCorner());
+            tile2 = room.positionToCoords(toMove.topRightCorner());
+            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                velocity.multiplyX(0);
+                position.setX((tile1.getCol() * GameFrame.ORIGINAL_TILE_SIZE) - size.getWidth()/2 -1);
+            }
+        }
+        
+        
+        
+
+
+        position.apply(velocity);
+        
+        
+        /*
         //deal with tile collisions
         String direction = getDirection();
         System.out.println(direction);
@@ -187,6 +232,7 @@ public class Player extends MovingEntity {
         position.apply(velocity);
         
         //deal with other entity collisions
+        */
     }
 
     @Override
@@ -249,7 +295,7 @@ public class Player extends MovingEntity {
 
     @Override
     public Hitbox getHitbox(){
-        return new Hitbox(new Rectangle(position.intX() + size.getWidth()/4, position.intY() + size.getHeight() - (int)(size.getHeight()/2.4), size.getWidth()/2, (int)(size.getHeight()/2.4)));
+        return new Hitbox(new Rectangle(position.intX(), position.intY(), size.getWidth()/2, (int)(size.getHeight()/2.2)));
     }
 
     @Override

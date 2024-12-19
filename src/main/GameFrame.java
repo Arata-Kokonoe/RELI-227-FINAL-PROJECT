@@ -4,12 +4,10 @@ package main;
 //=================================================================================================================
 //  IMPORTS
     import java.awt.Color;
-    import java.awt.Dimension;
     import java.awt.Graphics2D;
     import java.awt.GraphicsDevice;
     import java.awt.GraphicsEnvironment;
     import java.awt.Toolkit;
-    import java.awt.PageAttributes.OrientationRequestedType;
     import java.awt.image.BufferStrategy;
     import java.awt.image.BufferedImage;
 
@@ -103,7 +101,7 @@ public class GameFrame extends JFrame {
             Graphics2D g2temp = (Graphics2D)tempScreen.getGraphics();
         
             //draw background
-            g2temp.setColor(Color.WHITE);
+            g2temp.setColor(Color.BLACK);
             g2temp.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
             
             //draw all elements to temp image
@@ -125,7 +123,7 @@ public class GameFrame extends JFrame {
             
 
             //draw to bufferStrategy
-            g2d.setColor(Color.WHITE);
+            g2d.setColor(Color.BLACK);
             g2d.fillRect(0, 0, windowWidth, windowHeight);
             g2d.drawImage(tempScreen, 0, 0, windowWidth, windowHeight, null);
         } // doRendering(Graphics2D g2d, GameState gameState)
@@ -153,12 +151,13 @@ public class GameFrame extends JFrame {
                 }
             }
 
+            /*
             for(int i = 0; i < room.getWidth() / 16; i++){
                 for(int j = 0; j < room.getHeight() / 16; j++){
                     g2d.setColor(Color.RED);
-                    if(room.getTileArr()[i][j].getCollision()) g2d.drawRect(i * ORIGINAL_TILE_SIZE, j * ORIGINAL_TILE_SIZE, 16, 16);
+                    if(room.getTileArr()[i][j].getCollision()) g2d.drawRect(i * ORIGINAL_TILE_SIZE, j * ORIGINAL_TILE_SIZE, 15, 15);
                 }
-            }
+            }*/
         } // renderRoom(GameState gameState, Graphics2D graphics)
     //  Draws the tiles of the current room the user is in.
     //=============================================================================================================

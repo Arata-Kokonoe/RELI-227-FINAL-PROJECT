@@ -5,25 +5,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
-import core.Size;
 import core.Position;
 import entities.Entity;
 import entities.Hitbox;
 import entities.Player;
 import room.Room;
 import room.RoomManager;
-import room.TileManager;
 
 public class GameState {
 
     //SYSTEM
     private Input input;
     private Camera camera;
-    private Thread gameThread;
     public Random rng;
     public boolean fullscreen, settingsChanged;
+    private Sound BGM;
     
     //ENTITIES
     public Player player;
@@ -44,6 +41,7 @@ public class GameState {
         this.input = new Input();
         this.entities = new ArrayList<>();
         this.camera = new Camera();
+        this.BGM = new Sound();
 
         //PLAYER
         this.player = new Player();
@@ -52,10 +50,11 @@ public class GameState {
 
         //STATUS
         status = PLAY_STATUS;
+        playBGM();
 
         //ROOM & FLOOR
         roomManager = new RoomManager("limbo2");
-        roomManager.add(0);
+        player.getPosition().set(roomManager.getCurrentRoom().getSpawn());
     }
 
     public void update() {
@@ -80,6 +79,16 @@ public class GameState {
             settingsChanged = true;
             input.unPress(KeyEvent.VK_F);
         }
+    }
+
+    public void playBGM(){
+        BGM.setFile(0);
+        BGM.play();
+        BGM.loop();
+    }
+
+    public void stopMusic(){
+        BGM.stop();
     }
 
 

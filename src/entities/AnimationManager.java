@@ -1,8 +1,5 @@
 package entities;
 
-import entities.Entity;
-import entities.MovingEntity;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -34,7 +31,7 @@ public class AnimationManager {
     }
 
     public void update() {
-        if(entity.isMoving()){
+        if(entity.up || entity.down || entity.left || entity.right){
 
             currentFrameTime++;
 

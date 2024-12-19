@@ -1,6 +1,7 @@
 package room;
 
 import core.Size;
+import core.TileCoords;
 import main.Camera;
 import main.GameFrame;
 
@@ -18,6 +19,7 @@ public class Room {
     private int value;
     private Tile[][] tileArr;
     private TileManager tileManager;
+    private Position spawn;
 
     public Room(int v, String floor){
         value = v;
@@ -30,12 +32,15 @@ public class Room {
     private void setupRoom(){
 
         if(value == -1){
-            loadTileArr("/res/rooms/room_-1");
+            tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
+            size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
+            loadTileArr("/res/rooms/room_-1.txt");
+            spawn = new Position(0, 14 * GameFrame.ORIGINAL_TILE_SIZE);
         }
         if(value == -2){
             tileArr = new Tile[GameFrame.MAX_COL*2][GameFrame.MAX_ROW*2];
             size = new Size(GameFrame.MAX_COL * 2 * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * 2 * GameFrame.ORIGINAL_TILE_SIZE);
-            loadTileArr("/res/rooms/room_-2");
+            loadTileArr("/res/rooms/room_-2.txt");
         }
 
     }
@@ -86,6 +91,10 @@ public class Room {
         return size.getHeight();
     }
 
+    public Position getSpawn(){
+        return spawn;
+    }
+
 
     public Position getRandomPosition() {
         double x = Math.random() * tileArr.length * GameFrame.ORIGINAL_TILE_SIZE;
@@ -115,5 +124,7 @@ public class Room {
         return tileArr;
     }
     
-    
+    public TileCoords positionToCoords(Position pos){
+        return new TileCoords(pos.intX() / GameFrame.ORIGINAL_TILE_SIZE, pos.intY() / GameFrame.ORIGINAL_TILE_SIZE);
+    }
 }

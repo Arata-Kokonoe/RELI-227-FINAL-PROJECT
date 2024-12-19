@@ -5,15 +5,13 @@ package entities;
 //  IMPORTS
     import java.awt.Graphics2D;
     import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.util.List;
+    import java.awt.image.BufferedImage;
 
-import javax.imageio.ImageIO;
+    import javax.imageio.ImageIO;
 
-import core.Position;
+    import core.Position;
     import core.Size;
-import core.Vector2D;
-import main.Camera;
+    import main.Camera;
 //=================================================================================================================
 import main.GameState;
 

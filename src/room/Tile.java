@@ -45,4 +45,5 @@ public class Tile {
     public void setCollision(boolean collision){
         this.collision = collision;
     }
+
 }

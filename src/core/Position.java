@@ -10,11 +10,11 @@ public class Position {
     }
 
     public int intX() {
-        return (int) Math.round(x);
+        return (int)(x);
     }
 
     public int intY() {
-        return (int) Math.round(y);
+        return (int)(y);
     }
 
     public double getX() {
@@ -31,6 +31,11 @@ public class Position {
 
     public void setY(double newY) {
         y = newY;
+    }
+
+    public void set(Position pos){
+        this.x = pos.x;
+        this.y = pos.y;
     }
 
     public void apply(Vector2D velocity) {
