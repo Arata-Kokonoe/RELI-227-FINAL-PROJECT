@@ -19,28 +19,37 @@ public class Room {
     private int value;
     private Tile[][] tileArr;
     private TileManager tileManager;
-    private Position spawn;
+    private Position northSpawn, southSpawn, westSpawn, eastSpawn, mainSpawn;
 
     public Room(int v, String floor){
         value = v;
         tileManager = new TileManager(floor);
         tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
         size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
-        setupRoom();
+        setupRoom(floor);
     }
 
-    private void setupRoom(){
+    private void setupRoom(String floor){
 
         if(value == -1){
-            tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
-            size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
-            loadTileArr("/res/rooms/room_-1.txt");
-            spawn = new Position(0, 14 * GameFrame.ORIGINAL_TILE_SIZE);
-        }
-        if(value == -2){
             tileArr = new Tile[GameFrame.MAX_COL*2][GameFrame.MAX_ROW*2];
             size = new Size(GameFrame.MAX_COL * 2 * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * 2 * GameFrame.ORIGINAL_TILE_SIZE);
-            loadTileArr("/res/rooms/room_-2.txt");
+            loadTileArr("/res/floors/" + floor + "/rooms/room_" + value + ".txt");
+        }
+        else if(value == 0){
+            tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
+            size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
+            loadTileArr("/res/floors/" + floor + "/rooms/room_" + value + ".txt");
+
+            mainSpawn = new Position(GameFrame.ORIGINAL_TILE_SIZE, 14 * GameFrame.ORIGINAL_TILE_SIZE);
+            eastSpawn = new Position(getWidth() - GameFrame.ORIGINAL_TILE_SIZE, 14 * GameFrame.ORIGINAL_TILE_SIZE);
+        }
+        else if(value == 1){
+            tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
+            size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
+            loadTileArr("/res/floors/" + floor + "/rooms/room_" + value + ".txt");
+
+            westSpawn = new Position(GameFrame.ORIGINAL_TILE_SIZE, 14 * GameFrame.ORIGINAL_TILE_SIZE);
         }
 
     }
@@ -83,6 +92,10 @@ public class Room {
         }
     }
 
+    public int getValue(){
+        return value;
+    }
+
     public int getWidth(){
         return size.getWidth();
     }
@@ -90,11 +103,6 @@ public class Room {
     public int getHeight(){
         return size.getHeight();
     }
-
-    public Position getSpawn(){
-        return spawn;
-    }
-
 
     public Position getRandomPosition() {
         double x = Math.random() * tileArr.length * GameFrame.ORIGINAL_TILE_SIZE;
@@ -127,4 +135,53 @@ public class Room {
     public TileCoords positionToCoords(Position pos){
         return new TileCoords(pos.intX() / GameFrame.ORIGINAL_TILE_SIZE, pos.intY() / GameFrame.ORIGINAL_TILE_SIZE);
     }
+
+    public Room getEastRoom(){
+        return east;
+    }
+
+    public void setEastRoom(Room newRoom){
+        east = newRoom;
+    }
+
+    public Room getNorthRoom(){
+        return north;
+    }
+
+    public void setNorthRoom(Room newRoom){
+        north = newRoom;
+    }
+
+    public Room getWestRoom(){
+        return west;
+    }
+
+    public void setWestRoom(Room newRoom){
+        west = newRoom;
+    }
+
+    public Room getSouthRoom(){
+        return south;
+    }
+
+    public void setSouthRoom(Room newRoom){
+        south = newRoom;
+    }
+
+    public Position getEastSpawn(){
+        return eastSpawn;
+    }
+    public Position getWestSpawn(){
+        return westSpawn;
+    }
+    public Position getNorthSpawn(){
+        return northSpawn;
+    }
+    public Position getSouthSpawn(){
+        return southSpawn;
+    }
+    public Position getMainSpawn(){
+        return mainSpawn;
+    }
+
 }

@@ -42,7 +42,7 @@ public abstract class MovingEntity extends Entity{
             
             velocity.multiply(speed);
 
-            handleCollisions(gameState.getCollidingGameObjects(this.getHitbox()), gameState.getCurrentRoom());
+            handleCollisions(gameState.getCollidingGameObjects(this.getHitbox()), gameState);
             
             animationManager.update();
         }
@@ -86,7 +86,7 @@ public abstract class MovingEntity extends Entity{
         }
 
         protected abstract void setMovement(GameState gameState);
-        protected abstract void handleCollisions(List<Entity> collided, Room currentRoom);
+        protected abstract void handleCollisions(List<Entity> collided, GameState gameState);
     //=============================================================================================================
 
 

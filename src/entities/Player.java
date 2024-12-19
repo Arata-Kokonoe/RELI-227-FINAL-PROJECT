@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.Rectangle;
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -28,31 +29,65 @@ public class Player extends MovingEntity {
     }
 
     @Override
-    protected void handleCollisions(List<Entity> collided, Room room) {
+    protected void handleCollisions(List<Entity> collided, GameState gameState) {
         TileCoords tile1, tile2;
-        System.out.println(velocity.getX() + " " + velocity.getY());
+        Room room = gameState.getCurrentRoom();
 
         if(velocity.getY() > 0){
             Hitbox toMove = getHitbox().apply(new Vector2D(0, velocity.getY()));
-            tile1 = room.positionToCoords(toMove.botLeftCorner());
-            tile2 = room.positionToCoords(toMove.botRightCorner());
-            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+            if(toMove.botY() >= room.getHeight()){
+                //went out of bounds of room
                 velocity.multiplyY(0);
-                position.setY((tile1.getRow() * GameFrame.ORIGINAL_TILE_SIZE) - size.getHeight()/2.2);
+                position.setY(room.getHeight() - size.getHeight()/2.2);
+
+                if(room.getSouthRoom() != null){
+                    gameState.setCurrentRoom(room.getSouthRoom());
+                    position.set(room.getSouthRoom().getNorthSpawn());
+                }
+            }
+            else{
+                tile1 = room.positionToCoords(toMove.botLeftCorner());
+                tile2 = room.positionToCoords(toMove.botRightCorner());
+                if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                    velocity.multiplyY(0);
+                    position.setY((tile1.getRow() * GameFrame.ORIGINAL_TILE_SIZE) - size.getHeight()/2.2);
+                }
             }
         }
         else if(velocity.getY() < 0){
             Hitbox toMove = getHitbox().apply(new Vector2D(0, velocity.getY()));
-            tile1 = room.positionToCoords(toMove.topLeftCorner());
-            tile2 = room.positionToCoords(toMove.topRightCorner());
-            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+            if(toMove.topY() <= 0){
+                //went out of bounds of room
                 velocity.multiplyY(0);
-                position.setY((tile1.getRow() * GameFrame.ORIGINAL_TILE_SIZE) + GameFrame.ORIGINAL_TILE_SIZE);
+                position.setY(0 + GameFrame.ORIGINAL_TILE_SIZE);
+
+                if(room.getNorthRoom() != null){
+                    gameState.setCurrentRoom(room.getNorthRoom());
+                    position.set(room.getNorthRoom().getSouthSpawn());
+                }
+            }
+            else{
+                tile1 = room.positionToCoords(toMove.topLeftCorner());
+                tile2 = room.positionToCoords(toMove.topRightCorner());
+                if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                    velocity.multiplyY(0);
+                    position.setY((tile1.getRow() * GameFrame.ORIGINAL_TILE_SIZE) + GameFrame.ORIGINAL_TILE_SIZE);
+                }
             }
         }
 
         if(velocity.getX() < 0){
             Hitbox toMove = getHitbox().apply(new Vector2D(velocity.getX(), 0));
+            if(toMove.leftX() <= 0){
+                //went out of bounds of room
+                velocity.multiplyX(0);
+                position.setX(0);
+
+                if(room.getWestRoom() != null){
+                    gameState.setCurrentRoom(room.getWestRoom());
+                    position.set(room.getWestRoom().getEastSpawn());
+                }
+            }
             tile1 = room.positionToCoords(toMove.botLeftCorner());
             tile2 = room.positionToCoords(toMove.topLeftCorner());
             if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
@@ -62,17 +97,26 @@ public class Player extends MovingEntity {
         }
         else if(velocity.getX() > 0){
             Hitbox toMove = getHitbox().apply(new Vector2D(velocity.getX(), 0));
-            tile1 = room.positionToCoords(toMove.botRightCorner());
-            tile2 = room.positionToCoords(toMove.topRightCorner());
-            if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+            System.out.println(toMove.rightX());
+            if(toMove.rightX() >= room.getWidth()){
+                //went out of bounds of room
                 velocity.multiplyX(0);
-                position.setX((tile1.getCol() * GameFrame.ORIGINAL_TILE_SIZE) - size.getWidth()/2 -1);
+                position.setX(room.getWidth() - size.getWidth()/2 - 1);
+
+                if(room.getEastRoom() != null){
+                    gameState.setCurrentRoom(room.getEastRoom());
+                    position.set(room.getEastRoom().getWestSpawn());
+                }
+            }
+            else{
+                tile1 = room.positionToCoords(toMove.botRightCorner());
+                tile2 = room.positionToCoords(toMove.topRightCorner());
+                if(room.getTileArr()[tile1.getCol()][tile1.getRow()].getCollision() || room.getTileArr()[tile2.getCol()][tile2.getRow()].getCollision()){
+                    velocity.multiplyX(0);
+                    position.setX((tile1.getCol() * GameFrame.ORIGINAL_TILE_SIZE) - size.getWidth()/2 -1);
+                }
             }
         }
-        
-        
-        
-
 
         position.apply(velocity);
         
@@ -238,7 +282,7 @@ public class Player extends MovingEntity {
     @Override
     protected void setMovement(GameState gameState) {
         Input input = gameState.getInput();
-        if(input.isPressed(KeyEvent.VK_A)) {
+        if(input.isPressed(KeyEvent.VK_A) || input.isPressed(KeyEvent.VK_LEFT)) {
             left = true;
             moveOrder.newMove("left");
             moveOrder.cancel("left");
@@ -251,7 +295,7 @@ public class Player extends MovingEntity {
             }
 
         }
-        if(input.isPressed(KeyEvent.VK_D)) {
+        if(input.isPressed(KeyEvent.VK_D) || input.isPressed(KeyEvent.VK_RIGHT)) {
             right = true;
             moveOrder.newMove("right");
             moveOrder.cancel("right");
@@ -263,7 +307,7 @@ public class Player extends MovingEntity {
                 moveOrder.uncancelAll();
             }
         }
-        if(input.isPressed(KeyEvent.VK_W)) {
+        if(input.isPressed(KeyEvent.VK_W) || input.isPressed(KeyEvent.VK_UP)) {
             up = true;
             moveOrder.newMove("up");
             moveOrder.cancel("up");
@@ -276,7 +320,7 @@ public class Player extends MovingEntity {
             }
             
         }
-        if(input.isPressed(KeyEvent.VK_S)) {
+        if(input.isPressed(KeyEvent.VK_S) || input.isPressed(KeyEvent.VK_DOWN)){
             down = true;
             moveOrder.newMove("down");
             moveOrder.cancel("down");
@@ -290,7 +334,10 @@ public class Player extends MovingEntity {
             
         }
        
-        if(!(input.isPressed(KeyEvent.VK_W) || input.isPressed(KeyEvent.VK_S) || input.isPressed(KeyEvent.VK_D) || input.isPressed(KeyEvent.VK_A))) moveOrder.newMove("null");
+        if(!(input.isPressed(KeyEvent.VK_W) || input.isPressed(KeyEvent.VK_S) || 
+            input.isPressed(KeyEvent.VK_D) || input.isPressed(KeyEvent.VK_A) ||
+            input.isPressed(KeyEvent.VK_UP) ||  input.isPressed(KeyEvent.VK_DOWN) ||
+            input.isPressed(KeyEvent.VK_LEFT) ||  input.isPressed(KeyEvent.VK_RIGHT))) moveOrder.newMove("null");
     }
 
     @Override

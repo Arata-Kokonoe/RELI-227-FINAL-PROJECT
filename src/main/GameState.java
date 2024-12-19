@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,16 +22,21 @@ public class GameState {
     public Random rng;
     public boolean fullscreen, settingsChanged;
     private Sound BGM;
+    private UI ui;
     
     //ENTITIES
-    public Player player;
+    private Player player;
     public ArrayList<Entity> entities = new ArrayList<Entity>();
     public ArrayList<Entity> drawList = new ArrayList<Entity>();
 
     //STATUS
     public int status;
+    public static final int GAMEOVER_STATUS = -1;
     public static final int TITLE_STATUS = 0;
-    public static final int PLAY_STATUS = 1;
+    public static final int WALIKNG_STATUS = 1;
+    public static final int BATTLE_STATUS = 2;
+    public static final int DIALOGUE_STATUS = 2;
+    public static final int PAUSE_STATUS = 3;
 
     //ROOM
     private RoomManager roomManager;
@@ -42,6 +48,7 @@ public class GameState {
         this.entities = new ArrayList<>();
         this.camera = new Camera();
         this.BGM = new Sound();
+        this.ui = new UI(this);
 
         //PLAYER
         this.player = new Player();
@@ -49,35 +56,55 @@ public class GameState {
         camera.focusOn(player);
 
         //STATUS
-        status = PLAY_STATUS;
+        status = TITLE_STATUS;
         playBGM();
 
         //ROOM & FLOOR
-        roomManager = new RoomManager("limbo2");
-        player.getPosition().set(roomManager.getCurrentRoom().getSpawn());
+        roomManager = new RoomManager("limbo", rng);
+        player.getPosition().set(roomManager.getCurrentRoom().getMainSpawn());
     }
 
     public void update() {
-        if(status == PLAY_STATUS){
+        if(status == WALIKNG_STATUS){
             sortObjectsByPosition();
             entities.forEach(entity -> entity.update(this));
             camera.update(this);
-            checkControls();
         }
-        else{}
+        else if(status == TITLE_STATUS){
+            checkTitleControls();
+        }
+        checkFullscreen();
     }
 
     private void sortObjectsByPosition() {
         entities.sort(Comparator.comparing(entity -> entity.getPosition().getY()));
     }
 
-    public void checkControls(){
+    public void checkFullscreen(){
         //PLAY STATUS
         if(input.isPressed(KeyEvent.VK_F)){
             if(fullscreen == true) fullscreen = false;
             else fullscreen = true;
             settingsChanged = true;
             input.unPress(KeyEvent.VK_F);
+        }
+    }
+
+    public void checkTitleControls(){
+        //TITLE STATUS
+        boolean upPressed = false, downPressed = false;
+        if(input.isPressed(KeyEvent.VK_UP) || input.isPressed(KeyEvent.VK_W)) upPressed = true;
+        if(input.isPressed(KeyEvent.VK_DOWN) || input.isPressed(KeyEvent.VK_S)) downPressed = true;
+
+        if(upPressed){
+            ui.commandNum--;
+            upPressed = false;
+            if(ui.commandNum < 0) ui.commandNum = 3;
+        }
+        else if(downPressed){
+            ui.commandNum++;
+            downPressed = false;
+            if(ui.commandNum > 3) ui.commandNum = 0;
         }
     }
 
@@ -110,6 +137,11 @@ public class GameState {
             return camera;
         }
 
+        public Player getPlayer() {
+            return player;
+        }
+
+
         public Room getCurrentRoom(){
             return roomManager.getCurrentRoom();
         }
@@ -126,7 +158,16 @@ public class GameState {
             return collided;
         }
 
+        public UI getUI(){
+            return ui;
+        }
+
     //=================================================================================================================
+
+
+    public void setCurrentRoom(Room newRoom){
+        roomManager.setCurrentRoom(newRoom);
+    }
 
 }
 

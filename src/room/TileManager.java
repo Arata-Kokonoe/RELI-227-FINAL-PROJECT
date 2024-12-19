@@ -13,7 +13,7 @@ public class TileManager {
 
     public TileManager(String floor){
         
-        tile = new Tile[29]; //array holds different types of tiles (aka. tile[0] = grass tile)
+        tile = new Tile[32]; //array holds different types of tiles (aka. tile[0] = grass tile)
 
         getTileSet(floor);
     }
@@ -38,51 +38,18 @@ public class TileManager {
 
         try{
             tileset = setup("/tiles/" + floor + "_tileset");
-            /*
-            tile[0] = new Tile();
-            tile[0].setSprite(setup("/tiles/blank_tile"));
-            tile[1] = new Tile();
-            tile[1].setSprite(tileset.getSubimage(0, 0, 48, 48));
-            tile[2] = new Tile();
-            tile[2].setSprite(tileset.getSubimage(48, 0, 48, 48));
-            tile[3] = new Tile();
-            tile[3].setSprite(tileset.getSubimage(96, 0, 48, 48));
-            tile[4] = new Tile();
-            tile[4].setSprite(tileset.getSubimage(144, 0, 48, 48));
-            tile[5] = new Tile();
-            tile[5].setSprite(tileset.getSubimage(192, 0, 48, 48));
-            tile[6] = new Tile();
-            tile[6].setSprite(tileset.getSubimage(0, 48, 48, 48));
-            tile[7] = new Tile();
-            tile[7].setSprite(tileset.getSubimage(48, 48, 48, 48));
-            tile[8] = new Tile();
-            tile[8].setSprite(tileset.getSubimage(96, 48, 48, 48));
-            tile[9] = new Tile();
-            tile[9].setSprite(tileset.getSubimage(144, 48, 48, 48));
-            tile[10] = new Tile();
-            tile[10].setSprite(tileset.getSubimage(192, 48, 48, 48));
-            tile[11] = new Tile();
-            tile[11].setSprite(tileset.getSubimage(0, 96, 48, 48));
-            tile[12] = new Tile();
-            tile[12].setSprite(tileset.getSubimage(48, 96, 48, 48));
-            tile[13] = new Tile();
-            tile[13].setSprite(tileset.getSubimage(96, 96, 48, 48));
-            tile[14] = new Tile();
-            tile[14].setSprite(tileset.getSubimage(144, 96, 48, 48));
-            tile[15] = new Tile();
-            tile[15].setSprite(tileset.getSubimage(192, 96, 48, 48));
-            tile[16] = new Tile();
-            tile[16].setSprite(tileset.getSubimage(0, 144, 48, 48));
-            */
 
-            //tiles 1-9 should not be used
+            //tiles 1-9 should not be used, only use double digits
             for(int i = 0; i < 11; i++){
                 tile[i] = new Tile();
                 tile[i].setSprite(setup("/tiles/blank16_tile"));
                 tile[i].setCollision(true);
             }
+            //tile[10] is a blank tile
+
             tile[11] = new Tile();
             tile[11].setSprite(setup("/tiles/limboWall_tileset").getSubimage(0, 0, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+            //tile[11] is the normal floor tile
             int count = 12;
             for(int i = 0; i < 4; i++){
                 for(int j = 0; j < 4; j++){
@@ -93,9 +60,22 @@ public class TileManager {
             }
             tile[27] = new Tile();
             tile[27].setSprite(setup("/tiles/limboWall_tileset").getSubimage(GameFrame.ORIGINAL_TILE_SIZE, 0, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+            //tile[27] is the normal wall tile
+            
             tile[28] = new Tile();
             tile[28].setSprite(setup("/tiles/limboWall_tileset").getSubimage(0, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
-            for(int i = 12; i < 29; i++){
+            //tile[28] is the vined wall tile
+
+            tile[29] = new Tile();
+            tile[29].setSprite(setup("/tiles/limboWall_tileset").getSubimage(GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+
+            tile[30] = new Tile();
+            tile[30].setSprite(setup("/tiles/limboWall_tileset").getSubimage(0, GameFrame.ORIGINAL_TILE_SIZE*2, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+
+            tile[31] = new Tile();
+            tile[31].setSprite(setup("/tiles/limboWall_tileset").getSubimage(GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE*2, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+
+            for(int i = 12; i < tile.length; i++){
                 tile[i].setCollision(true);
             }
 

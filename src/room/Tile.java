@@ -10,7 +10,7 @@ public class Tile {
     private boolean collision;
 
     public Tile(){
-        image = setup("/tiles/blank_tile");
+        image = setup("/tiles/blank16_tile");
         collision = false;
     }
 
