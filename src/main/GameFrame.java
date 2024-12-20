@@ -103,8 +103,10 @@ public class GameFrame extends JFrame {
             //draw background
             g2temp.setColor(Color.BLACK);
             g2temp.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+            if(gameState.closeWindow == true) System.exit(0);   
             
-            if(gameState.status == GameState.WALIKNG_STATUS){
+            if(gameState.status == GameState.WALKING_STATUS){
                 //draw all elements to temp image
                 renderRoom(g2temp, gameState);
                 //for all entities in gameState, if in camera view, draw.
@@ -112,19 +114,41 @@ public class GameFrame extends JFrame {
                 for (Entity e : gameState.getEntities()) {
                     if(camera.isInView(e)) e.draw(g2temp, camera);
                 }
-                gameState.getUI().drawWalkingScreen(g2temp);
             }
             else if(gameState.status == GameState.TITLE_STATUS){
                 gameState.getUI().drawTitleScreen(g2temp);
             }
-            else if(gameState.status == GameState.PAUSE_STATUS){
-                gameState.getUI().drawPauseScreen(g2temp);
+            else if(gameState.status == GameState.SETTINGS_STATUS){
+                gameState.getUI().drawSettingsScreen(g2temp);
+            }
+            else if(gameState.status == GameState.MENU_STATUS){
+                //draw all elements to temp image
+                renderRoom(g2temp, gameState);
+                //for all entities in gameState, if in camera view, draw.
+                Camera camera = gameState.getCamera();
+                for (Entity e : gameState.getEntities()) {
+                    if(camera.isInView(e)) e.draw(g2temp, camera);
+                }
+                gameState.getUI().drawMenuScreen(g2temp);
             }
             else if(gameState.status == GameState.DIALOGUE_STATUS){
+                //draw all elements to temp image
+                renderRoom(g2temp, gameState);
+                //for all entities in gameState, if in camera view, draw.
+                Camera camera = gameState.getCamera();
+                for (Entity e : gameState.getEntities()) {
+                    if(camera.isInView(e)) e.draw(g2temp, camera);
+                }
                 gameState.getUI().drawDialogueScreen(g2temp);
             }
             else if(gameState.status == GameState.BATTLE_STATUS){
                 gameState.getUI().drawBattleScreen(g2temp);
+                Camera camera = gameState.getCamera();
+                for (Entity e : gameState.getBattleEntities()) {
+                    e.draw(g2temp, camera);
+                }
+                if(gameState.drawAttack) gameState.getUI().drawAction(g2temp, "attack");
+                else if (gameState.drawPray) gameState.getUI().drawAction(g2temp, "pray");
             }
             else if(gameState.status == GameState.GAMEOVER_STATUS){
                 gameState.getUI().commandNum = 0;
@@ -134,10 +158,10 @@ public class GameFrame extends JFrame {
             //dispose of the graphics of temp image
             g2temp.dispose();
 
-            if(gameState.settingsChanged == true){
+            if(gameState.resolutionChanged == true){
                 if(gameState.fullscreen == true) setFullscreen();
                 else if (gameState.fullscreen == false) setWindowed();
-                gameState.settingsChanged = false;
+                gameState.resolutionChanged = false;
             }
             
 

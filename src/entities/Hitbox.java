@@ -11,9 +11,11 @@ import main.Camera;
 public class Hitbox{
     
     private Rectangle bounds;
+    private Entity entity;
 
-    public Hitbox(Rectangle hb){
+    public Hitbox(Rectangle hb, Entity entity){
         bounds = hb;
+        this.entity = entity;
     }
 
     public boolean collidesWith(Hitbox other) {
@@ -29,10 +31,6 @@ public class Hitbox{
 
     public void draw(Graphics2D g2){
         g2.draw(bounds);
-        g2.drawLine(leftX(), topY(), rightX(), topY());
-        g2.drawLine(leftX(), topY(), leftX(), botY());
-        g2.drawLine(rightX(), topY(), rightX(), botY());
-        g2.drawLine(leftX(), botY(), rightX(), botY());
     }
 
     public void drawOnCamera(Graphics2D g2, Camera camera){
@@ -48,11 +46,17 @@ public class Hitbox{
     public int leftX(){
         return bounds.x;
     }
+    public int middleX(){
+        return bounds.x + (int)bounds.getWidth()/2;
+    }
     public int rightX(){
         return bounds.x + (int)bounds.getWidth();
     }
     public int topY(){
         return bounds.y;
+    }
+    public int middleY(){
+        return bounds.y + (int)bounds.getHeight()/2;
     }
     public int botY(){
         return bounds.y + (int)bounds.getHeight();
@@ -69,6 +73,13 @@ public class Hitbox{
     }
     public Position botLeftCorner(){
         return new Position(bounds.x, bounds.y + (int)bounds.getHeight());
+    }
+
+    public boolean equals(Hitbox otherHitbox){
+        return (otherHitbox.getEntity() == this.getEntity());
+    }
+    public Entity getEntity(){
+        return entity;
     }
 
 }

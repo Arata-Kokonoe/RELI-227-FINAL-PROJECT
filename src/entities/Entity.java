@@ -1,6 +1,7 @@
 //  PACKAGE
 package entities;
 
+import java.awt.Color;
 //=================================================================================================================
 //  IMPORTS
     import java.awt.Graphics2D;
@@ -25,6 +26,7 @@ public abstract class Entity {
     //  MEMBER VARIABLES
         protected Position position;
         protected Size size;
+        protected BufferedImage sprite;
     //=============================================================================================================
 
 
@@ -61,10 +63,19 @@ public abstract class Entity {
     //=============================================================================================================
 
 
+    public void drawHitboxOnCamera(Graphics2D g2, Camera camera){
+        this.getHitbox().drawOnCamera(g2, camera);
+    }
+
+    public void drawHitbox(Graphics2D g2){
+        g2.setColor(Color.RED);
+        this.getHitbox().draw(g2);
+    }
+
     //=============================================================================================================
     //  GETTERS
         public Hitbox getHitbox(){
-            return new Hitbox(new Rectangle(position.intX(), position.intY(), size.getWidth(), size.getHeight()));
+            return new Hitbox(new Rectangle(position.intX(), position.intY(), size.getWidth(), size.getHeight()), this);
         }
 
         public Size getSize(){

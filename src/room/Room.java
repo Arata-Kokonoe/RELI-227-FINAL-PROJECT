@@ -18,6 +18,7 @@ public class Room {
     private Size size;
     private int value;
     private Tile[][] tileArr;
+    private String[][] enemiesArr;
     private TileManager tileManager;
     private Position northSpawn, southSpawn, westSpawn, eastSpawn, mainSpawn;
 
@@ -25,6 +26,7 @@ public class Room {
         value = v;
         tileManager = new TileManager(floor);
         tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
+        enemiesArr = new String[GameFrame.MAX_COL][GameFrame.MAX_ROW];
         size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
         setupRoom(floor);
     }
@@ -46,9 +48,11 @@ public class Room {
         }
         else if(value == 1){
             tileArr = new Tile[GameFrame.MAX_COL][GameFrame.MAX_ROW];
+            enemiesArr = new String[GameFrame.MAX_COL][GameFrame.MAX_ROW];
             size = new Size(GameFrame.MAX_COL * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.MAX_ROW * GameFrame.ORIGINAL_TILE_SIZE);
             loadTileArr("/res/floors/" + floor + "/rooms/room_" + value + ".txt");
 
+            enemiesArr[34][14] = "Vergil";
             westSpawn = new Position(GameFrame.ORIGINAL_TILE_SIZE, 14 * GameFrame.ORIGINAL_TILE_SIZE);
         }
 
@@ -130,6 +134,10 @@ public class Room {
 
     public Tile[][] getTileArr() {
         return tileArr;
+    }
+
+    public String[][] getEnemiesArr(){
+        return enemiesArr;
     }
     
     public TileCoords positionToCoords(Position pos){

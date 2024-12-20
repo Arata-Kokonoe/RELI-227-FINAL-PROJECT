@@ -22,6 +22,10 @@ public class TileCoords {
     }
 
     public Hitbox getTileHitbox(){
-        return new Hitbox(new Rectangle(col * GameFrame.ORIGINAL_TILE_SIZE, row * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE));
+        return new Hitbox(new Rectangle(col * GameFrame.ORIGINAL_TILE_SIZE, row * GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE, GameFrame.ORIGINAL_TILE_SIZE), null);
+    }
+
+    public static Position coordsToPosition(int c, int r){
+        return new Position(c * GameFrame.ORIGINAL_TILE_SIZE, r * GameFrame.ORIGINAL_TILE_SIZE);
     }
 }

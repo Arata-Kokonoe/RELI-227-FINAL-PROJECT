@@ -52,7 +52,6 @@ public class AnimationManager {
             }
         }
         else {
-            directionIndex = 0;
             frameIndex = 0;
         }
 
