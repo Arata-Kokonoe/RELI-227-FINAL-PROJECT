@@ -332,7 +332,7 @@ public class UI {
         g2.drawString(subText, x, y);
         utool.changeAlpha(g2, 1f);
 
-        subText = "Space to continue dialogue.";
+        subText = "Z to continue dialogue.";
         x = getXForAlignToRightText(subText, GameFrame.ORIGINAL_TILE_SIZE*2 + width - 10, g2);
         y += 10;
         utool.changeAlpha(g2, 0.4f);
