@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +14,6 @@ import entities.Hitbox;
 import entities.Player;
 import entities.PlayerSoul;
 import entities.enemies.Enemy;
-import entities.enemies.StandingEnemy;
 import room.Room;
 import room.RoomManager;
 

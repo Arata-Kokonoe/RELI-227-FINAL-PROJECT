@@ -12,9 +12,18 @@ package main;
     import java.awt.image.BufferedImage;
 
     import javax.swing.JFrame;
+
     import core.Position;
-import entities.Entity;
-import room.Room;
+
+    import entities.Entity;
+
+    import room.Room;
+//=================================================================================================================
+
+
+//=================================================================================================================
+// The GameFrame class is an extension of JFrame that draws all the parts of the GameState to a window the user
+// can look at.
 //=================================================================================================================
 
 
@@ -122,9 +131,7 @@ public class GameFrame extends JFrame {
                 gameState.getUI().drawSettingsScreen(g2temp);
             }
             else if(gameState.status == GameState.MENU_STATUS){
-                //draw all elements to temp image
                 renderRoom(g2temp, gameState);
-                //for all entities in gameState, if in camera view, draw.
                 Camera camera = gameState.getCamera();
                 for (Entity e : gameState.getEntities()) {
                     if(camera.isInView(e)) e.draw(g2temp, camera);
@@ -132,9 +139,7 @@ public class GameFrame extends JFrame {
                 gameState.getUI().drawMenuScreen(g2temp);
             }
             else if(gameState.status == GameState.DIALOGUE_STATUS){
-                //draw all elements to temp image
                 renderRoom(g2temp, gameState);
-                //for all entities in gameState, if in camera view, draw.
                 Camera camera = gameState.getCamera();
                 for (Entity e : gameState.getEntities()) {
                     if(camera.isInView(e)) e.draw(g2temp, camera);
@@ -158,6 +163,7 @@ public class GameFrame extends JFrame {
             //dispose of the graphics of temp image
             g2temp.dispose();
 
+            //check for fullscreen
             if(gameState.resolutionChanged == true){
                 if(gameState.fullscreen == true) setFullscreen();
                 else if (gameState.fullscreen == false) setWindowed();
@@ -170,8 +176,8 @@ public class GameFrame extends JFrame {
             g2d.fillRect(0, 0, windowWidth, windowHeight);
             g2d.drawImage(tempScreen, 0, 0, windowWidth, windowHeight, null);
         } // doRendering(Graphics2D g2d, GameState gameState)
-    //  Draws the game state to a temporary screen based on the window size and then draws that temporary image
-    //  to the screen buffer.
+    //  Draws the game state, based on its status, to a temporary screen based on the window size and then draws
+    //  that temporary image to the screen buffer.
     //==============================================================================================================
 
 
@@ -193,14 +199,6 @@ public class GameFrame extends JFrame {
                     );
                 }
             }
-
-            /*
-            for(int i = 0; i < room.getWidth() / 16; i++){
-                for(int j = 0; j < room.getHeight() / 16; j++){
-                    g2d.setColor(Color.RED);
-                    if(room.getTileArr()[i][j].getCollision()) g2d.drawRect(i * ORIGINAL_TILE_SIZE, j * ORIGINAL_TILE_SIZE, 15, 15);
-                }
-            }*/
         } // renderRoom(GameState gameState, Graphics2D graphics)
     //  Draws the tiles of the current room the user is in.
     //=============================================================================================================
@@ -241,4 +239,8 @@ public class GameFrame extends JFrame {
         } // setWindowed()
     //  Sets the window to windowed mode.
     //=============================================================================================================
-}
+
+
+//=================================================================================================================
+} // class GameFrame
+//=================================================================================================================
