@@ -142,9 +142,9 @@ public class GameState {
     }
 
     private void defaultSettings(){
-        fullscreen = true;
+        //fullscreen = true;
         volume = 1.0F;
-        resolutionChanged = true;
+        //resolutionChanged = true;
         settingsChanged = true;
     }
 

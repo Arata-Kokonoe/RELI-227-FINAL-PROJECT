@@ -310,7 +310,7 @@ public class UI {
 
         //WINDOW
         int x = GameFrame.ORIGINAL_TILE_SIZE*2;
-        int y = GameFrame.ORIGINAL_TILE_SIZE/2;
+        int y = GameFrame.ORIGINAL_TILE_SIZE*2;
         int width = GameFrame.GAME_WIDTH - (GameFrame.ORIGINAL_TILE_SIZE*4);
         int height = GameFrame.ORIGINAL_TILE_SIZE*4;
         drawRoundedSubWindow(x, y, width, height, g2);
@@ -327,7 +327,7 @@ public class UI {
         g2.setFont(beyondWonderland.deriveFont(Font.PLAIN, 12F));
         String subText = "X to close dialogue window.";
         x = getXForAlignToRightText(subText, GameFrame.ORIGINAL_TILE_SIZE*2 + width - 10, g2);
-        y = GameFrame.ORIGINAL_TILE_SIZE/2 + height - 20;
+        y = GameFrame.ORIGINAL_TILE_SIZE*2 + height - 20;
         utool.changeAlpha(g2, 0.4f);
         g2.drawString(subText, x, y);
         utool.changeAlpha(g2, 1f);
