@@ -43,8 +43,8 @@ public class GameFrame extends JFrame {
         public static final int GAME_WIDTH = ORIGINAL_TILE_SIZE * MAX_COL;
 
         //  WINDOW SETTINGS
-        private int windowWidth = GAME_WIDTH;
-        private int windowHeight = GAME_HEIGHT;
+        public int windowWidth = GAME_WIDTH;
+        public int windowHeight = GAME_HEIGHT;
 
         // BUFFER STRATEGY
         private BufferedImage tempScreen;
@@ -60,7 +60,7 @@ public class GameFrame extends JFrame {
     //  CONSTRUCTOR
         public GameFrame(String title) {
             super(title);
-            this.setResizable(false);
+            this.setResizable(true);
             this.setSize(GAME_WIDTH, GAME_HEIGHT);
             this.setBackground(Color.BLACK);
             tempScreen = new BufferedImage(GAME_WIDTH, GAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -86,7 +86,10 @@ public class GameFrame extends JFrame {
             Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();
             try {
                 // Do the rendering
+                windowWidth = (int)this.getContentPane().getSize().getWidth();
+                windowHeight = (int)this.getContentPane().getSize().getHeight();
                 doRendering(graphics, gameState);
+                
             } finally {
                 // Dispose the graphics, because it is no more needed
                 graphics.dispose();
@@ -125,7 +128,7 @@ public class GameFrame extends JFrame {
                 }
             }
             else if(gameState.status == GameState.TITLE_STATUS){
-                gameState.getUI().drawTitleScreen(g2temp);
+                gameState.getUI().drawTitleScreen(g2temp, this);
             }
             else if(gameState.status == GameState.SETTINGS_STATUS){
                 gameState.getUI().drawSettingsScreen(g2temp);

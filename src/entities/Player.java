@@ -45,7 +45,6 @@ public class Player extends MovingEntity {
     public void checkInteraction(GameState gameState){
         Hitbox toCheck = getHitbox();
         if(gameState.interactPressed){
-            System.out.println(getMoveOrder().getCurrent());
             if(getMoveOrder().getCurrent() != null){
                 switch (getMoveOrder().getCurrent()) {
                     case "left":

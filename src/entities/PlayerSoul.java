@@ -59,8 +59,6 @@ public class PlayerSoul extends MovingEntity{
 
         if(velocity.getY() > 0){
             Hitbox toMove = getHitbox().apply(new Vector2D(0, velocity.getY()));
-            System.out.println("toMove.botY() = " + toMove.botY());
-            System.out.println("battleWindow.botY() = " + gameState.getUI().battleWindow.botY());
             if(toMove.botY() >= gameState.getUI().battleWindow.botY()){
                 //went out of bounds of room
                 velocity.multiplyY(0);
@@ -69,8 +67,6 @@ public class PlayerSoul extends MovingEntity{
         }
         else if(velocity.getY() < 0){
             Hitbox toMove = getHitbox().apply(new Vector2D(0, velocity.getY()));
-            System.out.println("toMove.topY() = " + toMove.topY());
-            System.out.println("battleWindow.topY() = " + gameState.getUI().battleWindow.topY());
             if(toMove.topY() <= gameState.getUI().battleWindow.topY()){
                 //went out of bounds of room
                 velocity.multiplyY(0);

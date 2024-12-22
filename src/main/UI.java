@@ -120,8 +120,107 @@ public class UI {
         }
     }
 
-    public void drawTitleScreen(Graphics2D g2){
+    public void drawTitleScreen(Graphics2D g2, GameFrame gameFrame){
 
+        if(titleScreenState == 0){
+            //BACKGROUND
+            g2.setColor(Color.BLACK);
+            g2.fillRect(0, 0, gameFrame.windowWidth, gameFrame.windowHeight);
+
+            //TITLE NAME
+            g2.setFont(beyondWonderland.deriveFont(Font.PLAIN, 96F));
+            String text = "Dante's Decay";
+            int x = getXForCenteredText(text, g2);
+            int y = GameFrame.ORIGINAL_TILE_SIZE*12;
+            
+            //SHADOW
+            g2.setColor(new Color(0, 1, 0));
+            g2.drawString(text, x+5, y+5);
+            //MAIN COLOR
+            g2.setColor(new Color(255, 255, 244));
+            g2.drawString(text, x, y);
+
+            //MENU
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 36F));
+
+            text = "NEW GAME";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*6;
+            g2.drawString(text, x, y);
+            if(commandNum == 0){
+                g2.drawString(">", x-GameFrame.ORIGINAL_TILE_SIZE, y);
+            }
+
+            
+            text = "SETTINGS";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+            if(commandNum == 1){
+                g2.drawString(">", x-GameFrame.ORIGINAL_TILE_SIZE, y);
+            }
+
+            text = "CONTROLS";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+            if(commandNum == 2){
+                g2.drawString(">", x-GameFrame.ORIGINAL_TILE_SIZE, y);
+            }
+
+            text = "QUIT";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+            if(commandNum == 3){
+                g2.drawString(">", x-GameFrame.ORIGINAL_TILE_SIZE, y);
+            }
+        }
+        else if(titleScreenState == 1){
+            
+            //CONTROLS SCREEN
+            g2.setColor(Color.WHITE);
+            g2.setFont(gotHeroin.deriveFont(42F));
+
+            String text = "CONTROLS:";
+            int x = getXForCenteredText(text, g2);
+            int y = GameFrame.ORIGINAL_TILE_SIZE*6;
+            g2.drawString(text, x, y);
+
+            
+            g2.setFont(g2.getFont().deriveFont(30F));
+            text = "ARROW KEYS to move";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+
+            text = "Z to interact";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+
+            text = "X to get out of dialogue";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+
+            text = "M to open menu";
+            x = getXForCenteredText(text, g2);
+            y += GameFrame.ORIGINAL_TILE_SIZE*3;
+            g2.drawString(text, x, y);
+
+            //add more controls here
+
+            text = "Press X to exit this menu";
+            g2.setFont(beyondWonderland.deriveFont(20F));
+            g2.setColor(new Color(90, 90, 90));
+            x = (int)(gameFrame.windowWidth - g2.getFontMetrics().getStringBounds(text, g2).getWidth() - (GameFrame.ORIGINAL_TILE_SIZE * 0.25));
+            y = gameFrame.windowHeight - (int)g2.getFontMetrics().getStringBounds(text, g2).getHeight();
+            g2.drawString(text, x, y);
+
+        }
+
+        /*
         if(titleScreenState == 0){
             //BACKGROUND
             g2.setColor(Color.BLACK);
@@ -224,6 +323,7 @@ public class UI {
             g2.drawString(text, x, y);
 
         }
+        */
     }
 
     public void drawSettingsScreen(Graphics2D g2){
